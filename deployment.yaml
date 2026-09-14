@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cicd-project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cicd-project
+  template:
+    metadata:
+      labels:
+        app: cicd-project
+    spec:
+      containers:
+        - name: cicd-project
+          image: cicd-project:1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cicd-project
+spec:
+  selector:
+    app: cicd-project
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
