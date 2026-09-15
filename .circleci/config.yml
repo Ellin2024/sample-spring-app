@@ -41,7 +41,7 @@ jobs:
 
             docker build \
               --progress=plain \
-              -t "${DOCKERHUB_USERNAME}/Cicd-project:${CIRCLE_SHA1}" .
+              -t "${DOCKERHUB_USERNAME}/cicd-project:${CIRCLE_SHA1}" .
 
       # -------------------------------
       # 5. Login to Docker Hub
@@ -61,7 +61,7 @@ jobs:
           name: Push Docker image
           command: |
             docker push \
-              "${DOCKERHUB_USERNAME}/Cicd-project:${CIRCLE_SHA1}"
+              "${DOCKERHUB_USERNAME}/cicd-project:${CIRCLE_SHA1}"
 
       # -------------------------------
       # 7. Update GitOps Repository
@@ -78,7 +78,7 @@ jobs:
             echo "Updating Kubernetes image..."
 
             sed -i \
-              "s|image:.*|image: ${DOCKERHUB_USERNAME}/Cicd-project:${CIRCLE_SHA1}|" \
+              "s|image:.*|image: ${DOCKERHUB_USERNAME}/cicd-project:${CIRCLE_SHA1}|" \
               deployment.yaml
 
             echo "Updated deployment.yaml:"
@@ -90,7 +90,7 @@ jobs:
             git add deployment.yaml
 
             git commit \
-              -m "Update Cicd-project image to ${CIRCLE_SHA1}" || true
+              -m "Update cicd-project image to ${CIRCLE_SHA1}" || true
 
             git push origin main
 
